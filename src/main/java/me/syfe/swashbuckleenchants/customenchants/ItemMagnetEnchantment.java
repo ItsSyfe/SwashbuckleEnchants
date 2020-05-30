@@ -30,7 +30,7 @@ public class ItemMagnetEnchantment extends Enchantment implements Listener {
         ItemStack[] stack = drops.toArray(new ItemStack[drops.size()]);
 
         if(player.getEquipment().getItemInMainHand().getEnchantments().containsKey(Enchantment.getByKey(SwashbuckleEnchants.itemMagnetEnchantment.getKey()))){
-            if(isInventoryFull(player) == false){
+            if(isInventoryFull(player) == false || e.getPlayer().getInventory().contains(stack[0])){
                 e.getPlayer().getInventory().addItem(drops.toArray(new ItemStack[0]));
             } else {
                 player.getWorld().dropItem(player.getLocation().add(0, .5, 0), stack[0]);
