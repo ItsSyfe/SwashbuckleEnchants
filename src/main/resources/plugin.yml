@@ -3,8 +3,8 @@ version: ${project.version}
 main: me.syfe.swashbuckleenchants.SwashbuckleEnchants
 api-version: 1.13
 authors: [Syfe]
-description: Swashbuckle Enchants plugin, this contains custom enchants that players can obtain.
+description: Custom enchants that players can be given.
 commands:
   itmgive:
-    description: Apply Item Magnet Enchant to item in hand.
+    description: Apply Item Magnet enchant.
     usage: /<command>

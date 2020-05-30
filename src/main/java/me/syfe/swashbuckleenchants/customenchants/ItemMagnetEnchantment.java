@@ -5,11 +5,12 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -30,13 +31,32 @@ public class ItemMagnetEnchantment extends Enchantment implements Listener {
         ItemStack[] stack = drops.toArray(new ItemStack[drops.size()]);
 
         if(player.getEquipment().getItemInMainHand().getEnchantments().containsKey(Enchantment.getByKey(SwashbuckleEnchants.itemMagnetEnchantment.getKey()))){
-            if(isInventoryFull(player) == false || e.getPlayer().getInventory().contains(stack[0])){
-                e.getPlayer().getInventory().addItem(drops.toArray(new ItemStack[0]));
+            if(isInventoryFull(player) == false || player.getInventory().contains(stack[0])){
+                player.getInventory().addItem(drops.toArray(new ItemStack[0]));
             } else {
                 player.getWorld().dropItem(player.getLocation().add(0, .5, 0), stack[0]);
             }
             e.getBlock().setType(Material.AIR);
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityKill(EntityDeathEvent e){
+        if(e.getEntity().getKiller() instanceof Player){
+            Player player = (Player) e.getEntity().getKiller();
+
+            Collection<ItemStack> drops = e.getDrops();
+            ItemStack[] stack = drops.toArray(new ItemStack[drops.size()]);
+
+            if(player.getEquipment().getItemInMainHand().getEnchantments().containsKey(Enchantment.getByKey(SwashbuckleEnchants.itemMagnetEnchantment.getKey()))){
+                if(isInventoryFull(player) == false || player.getInventory().contains(stack[0])){
+                    player.getInventory().addItem(drops.toArray(new ItemStack[0]));
+                } else {
+                    player.getWorld().dropItem(player.getLocation().add(0, .5, 0), stack[0]);
+                }
+                e.getDrops().clear();
+            }
         }
     }
 
