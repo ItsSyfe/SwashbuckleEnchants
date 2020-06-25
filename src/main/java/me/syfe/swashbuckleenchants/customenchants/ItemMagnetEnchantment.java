@@ -31,13 +31,16 @@ public class ItemMagnetEnchantment extends Enchantment implements Listener {
         ItemStack[] stack = drops.toArray(new ItemStack[drops.size()]);
 
         if(player.getEquipment().getItemInMainHand().getEnchantments().containsKey(Enchantment.getByKey(SwashbuckleEnchants.itemMagnetEnchantment.getKey()))){
-            if(isInventoryFull(player) == false || player.getInventory().contains(stack[0])){
+            if(player.getInventory().contains(stack[0]) || isInventoryFull(player) == false){
                 player.getInventory().addItem(drops.toArray(new ItemStack[0]));
             } else {
                 player.getWorld().dropItem(player.getLocation().add(0, .5, 0), stack[0]);
             }
             e.getBlock().setType(Material.AIR);
-            e.setCancelled(true);
+            e.getBlock().getDrops(player.getInventory().getItemInMainHand()).clear();
+
+            player.giveExp(e.getExpToDrop());
+            e.setExpToDrop(0);
         }
     }
 
@@ -50,12 +53,15 @@ public class ItemMagnetEnchantment extends Enchantment implements Listener {
             ItemStack[] stack = drops.toArray(new ItemStack[drops.size()]);
 
             if(player.getEquipment().getItemInMainHand().getEnchantments().containsKey(Enchantment.getByKey(SwashbuckleEnchants.itemMagnetEnchantment.getKey()))){
-                if(isInventoryFull(player) == false || player.getInventory().contains(stack[0])){
+                if(player.getInventory().contains(stack[0]) || isInventoryFull(player) == false){
                     player.getInventory().addItem(drops.toArray(new ItemStack[0]));
                 } else {
                     player.getWorld().dropItem(player.getLocation().add(0, .5, 0), stack[0]);
                 }
                 e.getDrops().clear();
+
+                player.giveExp(e.getDroppedExp());
+                e.setDroppedExp(0);
             }
         }
     }
