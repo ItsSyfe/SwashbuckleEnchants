@@ -1,6 +1,7 @@
 package me.syfe.swashbuckleenchants;
 
 import me.syfe.swashbuckleenchants.customenchants.ItemMagnetEnchantment;
+import me.syfe.swashbuckleenchants.customenchants.SoulListener;
 import org.bukkit.*;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -29,6 +30,7 @@ public final class SwashbuckleEnchants extends JavaPlugin implements Listener {
         registerEnchantment(itemMagnetEnchantment);
 
         this.getServer().getPluginManager().registerEvents(itemMagnetEnchantment, this);
+        this.getServer().getPluginManager().registerEvents(new SoulListener(), this);
     }
 
     @Override
