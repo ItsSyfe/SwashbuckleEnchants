@@ -15,7 +15,8 @@ public class SoulListener implements Listener
 
     public static boolean isSoulbound(ItemStack item) {
         AdvancedItemStack stack = new AdvancedItemStack(item);
-        return stack.getNBTTagInt("Soulbound", 0) == 1 ? true : false;
+        if(!(stack.getNBTTagString("tag") == null)) return true;
+        return false;
     }
 
     List<ItemStack> giveOnRespawn = new ArrayList<ItemStack>();
