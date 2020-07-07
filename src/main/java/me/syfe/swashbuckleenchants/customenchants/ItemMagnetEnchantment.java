@@ -3,6 +3,7 @@ package me.syfe.swashbuckleenchants.customenchants;
 import me.syfe.swashbuckleenchants.SwashbuckleEnchants;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -26,17 +28,15 @@ public class ItemMagnetEnchantment extends Enchantment implements Listener {
 
         Player player = (Player) e.getPlayer();
 
-        Collection<ItemStack> drops = e.getBlock().getDrops(player.getInventory().getItemInMainHand());
-        ItemStack[] stack = drops.toArray(new ItemStack[drops.size()]);
+        ItemStack[] stack = e.getBlock().getDrops(player.getInventory().getItemInMainHand()).toArray(new ItemStack[e.getBlock().getDrops(player.getInventory().getItemInMainHand()).size()]);
 
         if(player.getEquipment().getItemInMainHand().getEnchantments().containsKey(Enchantment.getByKey(SwashbuckleEnchants.itemMagnetEnchantment.getKey()))){
             if(player.getInventory().contains(stack[0]) || isInventoryFull(player) == false){
-                player.getInventory().addItem(drops.toArray(new ItemStack[0]));
+                player.getInventory().addItem(stack);
             } else {
                 player.getWorld().dropItem(player.getLocation().add(0, .5, 0), stack[0]);
             }
-            e.getBlock().setType(Material.AIR);
-            e.getBlock().getDrops(player.getInventory().getItemInMainHand()).clear();
+            e.setDropItems(false);
 
             player.giveExp(e.getExpToDrop());
             e.setExpToDrop(0);
